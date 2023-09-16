@@ -35,6 +35,8 @@ const (
 	LET      = "LET"
 	TRUE     = "TRUE"
 	FALSE     = "FALSE"
+	IF     = "IF"
+	ELSE     = "ELSE"
 )
 
 var keywords = map[string]TokenType{
@@ -42,6 +44,8 @@ var keywords = map[string]TokenType{
 	"let":  LET,
 	"true": TRUE,
 	"false": FALSE,
+	"if": IF,
+	"else": ELSE,
 }
 
 func LookupIdent(ident string) TokenType {

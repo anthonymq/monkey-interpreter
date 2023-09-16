@@ -168,3 +168,39 @@ func TestKeywordFalse(t *testing.T) {
 		assertToken(t, i, tok, tt)
 	}
 }
+
+func TestKeywordIf(t *testing.T) {
+	input := `
+	if;
+   `
+	tests := []struct {
+		expectedType    token.TokenType
+		expectedLiteral string
+	}{
+		{token.IF, "if"},
+		{token.SEMICOLON, ";"},
+	}
+	l := New(input)
+	for i, tt := range tests {
+		tok := l.NextToken()
+		assertToken(t, i, tok, tt)
+	}
+}
+
+func TestKeywordElse(t *testing.T) {
+	input := `
+	else;
+   `
+	tests := []struct {
+		expectedType    token.TokenType
+		expectedLiteral string
+	}{
+		{token.ELSE, "else"},
+		{token.SEMICOLON, ";"},
+	}
+	l := New(input)
+	for i, tt := range tests {
+		tok := l.NextToken()
+		assertToken(t, i, tok, tt)
+	}
+}
