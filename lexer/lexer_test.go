@@ -242,3 +242,23 @@ func TestKeywordEQ(t *testing.T) {
 		assertToken(t, i, tok, tt)
 	}
 }
+
+func TestKeywordNotEQ(t *testing.T) {
+	input := `
+	1 != 10;
+   `
+	tests := []struct {
+		expectedType    token.TokenType
+		expectedLiteral string
+	}{
+		{token.INT, "1"},
+		{token.NOT_EQ, "!="},
+		{token.INT, "10"},
+		{token.SEMICOLON, ";"},
+	}
+	l := New(input)
+	for i, tt := range tests {
+		tok := l.NextToken()
+		assertToken(t, i, tok, tt)
+	}
+}
