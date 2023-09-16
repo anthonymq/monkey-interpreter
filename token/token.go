@@ -33,11 +33,13 @@ const (
 	// 1343456
 	FUNCTION = "FUNCTION"
 	LET      = "LET"
+	TRUE     = "TRUE"
 )
 
 var keywords = map[string]TokenType{
-	"fn":  FUNCTION,
-	"let": LET,
+	"fn":   FUNCTION,
+	"let":  LET,
+	"true": TRUE,
 }
 
 func LookupIdent(ident string) TokenType {

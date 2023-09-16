@@ -5,6 +5,20 @@ import (
 	"testing"
 )
 
+func assertToken(t *testing.T, testNb int, currentToken token.Token, expectedToken struct {
+	expectedType    token.TokenType
+	expectedLiteral string
+}) {
+	if currentToken.Type != expectedToken.expectedType {
+		t.Fatalf("tests[%d] - tokentype wrong. expected=%q, got=%q",
+			testNb, expectedToken.expectedType, currentToken.Type)
+	}
+	if currentToken.Literal != expectedToken.expectedLiteral {
+		t.Fatalf("tests[%d] - literal wrong. expected=%q, got=%q",
+			testNb, expectedToken.expectedLiteral, currentToken.Literal)
+	}
+}
+
 func TestNextToken(t *testing.T) {
 	input := `=+(){},;`
 
@@ -25,14 +39,7 @@ func TestNextToken(t *testing.T) {
 	l := New(input)
 	for i, tt := range tests {
 		tok := l.NextToken()
-		if tok.Type != tt.expectedType {
-			t.Fatalf("tests[%d] - tokentype wrong. expected=%q, got=%q",
-				i, tt.expectedType, tok.Type)
-		}
-		if tok.Literal != tt.expectedLiteral {
-			t.Fatalf("tests[%d] - literal wrong. expected=%q, got=%q",
-				i, tt.expectedLiteral, tok.Literal)
-		}
+		assertToken(t, i, tok, tt)
 	}
 }
 
@@ -89,14 +96,7 @@ let ten = 10;
 	l := New(input)
 	for i, tt := range tests {
 		tok := l.NextToken()
-		if tok.Type != tt.expectedType {
-			t.Fatalf("tests[%d] - tokentype wrong. expected=%q, got=%q",
-				i, tt.expectedType, tok.Type)
-		}
-		if tok.Literal != tt.expectedLiteral {
-			t.Fatalf("tests[%d] - literal wrong. expected=%q, got=%q",
-				i, tt.expectedLiteral, tok.Literal)
-		}
+		assertToken(t, i, tok, tt)
 	}
 
 }
@@ -122,20 +122,31 @@ func TestNewOperators(t *testing.T) {
 		{token.INT, "10"},
 		{token.GT, ">"},
 		{token.INT, "5"},
+
 		{token.SEMICOLON, ";"},
 		{token.EOF, ""},
 	}
 	l := New(input)
 	for i, tt := range tests {
 		tok := l.NextToken()
-		if tok.Type != tt.expectedType {
-			t.Fatalf("tests[%d] - tokentype wrong. expected=%q, got=%q",
-				i, tt.expectedType, tok.Type)
-		}
-		if tok.Literal != tt.expectedLiteral {
-			t.Fatalf("tests[%d] - literal wrong. expected=%q, got=%q",
-				i, tt.expectedLiteral, tok.Literal)
-		}
+		assertToken(t, i, tok, tt)
 	}
+}
 
+func TestKeywordTrue(t *testing.T) {
+	input := `
+	true;
+   `
+	tests := []struct {
+		expectedType    token.TokenType
+		expectedLiteral string
+	}{
+		{token.TRUE, "true"},
+		{token.SEMICOLON, ";"},
+	}
+	l := New(input)
+	for i, tt := range tests {
+		tok := l.NextToken()
+		assertToken(t, i, tok, tt)
+	}
 }
