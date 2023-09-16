@@ -222,3 +222,23 @@ func TestKeywordReturn(t *testing.T) {
 		assertToken(t, i, tok, tt)
 	}
 }
+
+func TestKeywordEQ(t *testing.T) {
+	input := `
+	10 == 10;
+   `
+	tests := []struct {
+		expectedType    token.TokenType
+		expectedLiteral string
+	}{
+		{token.INT, "10"},
+		{token.EQ, "=="},
+		{token.INT, "10"},
+		{token.SEMICOLON, ";"},
+	}
+	l := New(input)
+	for i, tt := range tests {
+		tok := l.NextToken()
+		assertToken(t, i, tok, tt)
+	}
+}
