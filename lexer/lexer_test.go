@@ -204,3 +204,21 @@ func TestKeywordElse(t *testing.T) {
 		assertToken(t, i, tok, tt)
 	}
 }
+
+func TestKeywordReturn(t *testing.T) {
+	input := `
+	return;
+   `
+	tests := []struct {
+		expectedType    token.TokenType
+		expectedLiteral string
+	}{
+		{token.RETURN, "return"},
+		{token.SEMICOLON, ";"},
+	}
+	l := New(input)
+	for i, tt := range tests {
+		tok := l.NextToken()
+		assertToken(t, i, tok, tt)
+	}
+}
