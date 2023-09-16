@@ -150,3 +150,21 @@ func TestKeywordTrue(t *testing.T) {
 		assertToken(t, i, tok, tt)
 	}
 }
+
+func TestKeywordFalse(t *testing.T) {
+	input := `
+	false;
+   `
+	tests := []struct {
+		expectedType    token.TokenType
+		expectedLiteral string
+	}{
+		{token.FALSE, "false"},
+		{token.SEMICOLON, ";"},
+	}
+	l := New(input)
+	for i, tt := range tests {
+		tok := l.NextToken()
+		assertToken(t, i, tok, tt)
+	}
+}
